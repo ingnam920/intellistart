@@ -4,12 +4,19 @@ public class Calc {
   public static int run(String exp) {
     boolean needToMultiply = exp.contains("*");
     boolean needToPlus = exp.contains("+");
+    boolean needToMinus = exp.contains("-");
 
+    exp = Value1(exp);
 
     int sum = 0;
     int mul = 1;
     if (needToPlus) {
+
       if (needToMultiply) {
+        if (needToMinus) {
+          exp = exp.replaceAll("\\- ", "\\+ \\-");
+        }
+
         String[] s1 = exp.split(" \\+ ");
         for (String n : s1) {
           String[] s2 = n.split(" \\* ");
@@ -25,7 +32,11 @@ public class Calc {
         }
         return sum;
       }
-      exp = exp.replaceAll("\\- ", "\\+ \\-");
+      if (needToMinus) {
+        exp = exp.replaceAll("\\- ", "\\+ \\-");
+      }
+
+
       String[] bits = exp.split(" \\+ ");
       sum = 0;
 
@@ -34,17 +45,48 @@ public class Calc {
       }
       return sum;
 
-    } else if (needToMultiply) {
-      String[] bits = exp.split(" \\* ");
-      int rs = 1;
+    } else if (needToMinus) {
+      exp = exp.replaceAll("\\- ", "\\+ \\-");
+
+      if (needToMultiply) {
+
+        String[] s1 = exp.split(" \\+ ");
+        for (String n : s1) {
+          String[] s2 = n.split(" \\* ");
+          if (s2.length == 1) {
+            sum += Integer.parseInt(n);
+            continue;
+          }
+          for (String n2 : s2) {
+            mul *= Integer.parseInt(n2);
+          }
+          sum += mul;
+
+        }
+        return sum;
+      }
+      String[] bits = exp.split(" \\+ ");
+      sum = 0;
 
       for (int i = 0; i < bits.length; i++) {
-        rs *= Integer.parseInt(bits[i]);
+        sum += Integer.parseInt(bits[i]);
       }
-      return rs;
-    }
+      return sum;
 
-//    throw new RuntimeException("처리할 수 있는 계산식이 아닙니다");
-    throw new RuntimeException("처리할 수 있는 계산식이 아닙니다");
+    }
+    throw new RuntimeException("처리할수있는계산식이아냐");
   }
+
+  public static String Value1(String exp) {
+    while (exp.charAt(0) == '(' && exp.charAt(exp.length() - 1) == ')') {
+      exp.substring(1, exp.length() - 1);
+    }
+    return exp;
+  }
+
+
 }
+
+
+
+

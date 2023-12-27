@@ -39,5 +39,9 @@ public class Main {
       sum += mul;
     }
     System.out.println(sum);
+
+    String s5="-10 - 10 - 10";
+    String s6 = s5.replaceAll("\\- ", "\\+ \\-");
+    System.out.println(s6);
   }
 }
