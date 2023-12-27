@@ -24,4 +24,10 @@ public class CalcTest {
         assertThat(Calc.run("50 - 30")).isEqualTo(20);
     }
 
+    @Test
+    @DisplayName("10 - 30 - 10 + 50 - 10 == 10")
+    void t4(){
+        assertThat(Calc.run("10 - 30 - 10 + 50 - 10")).isEqualTo(10);
+    }
+
 }
