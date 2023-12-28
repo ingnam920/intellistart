@@ -2,14 +2,19 @@ package com.ll;
 
 public class Calc {
   public static int run(String exp) {
+    exp = Value1(exp);
     boolean needToMultiply = exp.contains("*");
     boolean needToPlus = exp.contains("+");
     boolean needToMinus = exp.contains("-");
+    boolean needbrac = exp.contains("(");
 
-    exp = Value1(exp);
 
     int sum = 0;
     int mul = 1;
+    if (needbrac) {
+      exp = Value2(exp);
+    }
+
     if (needToPlus) {
 
       if (needToMultiply) {
@@ -31,19 +36,24 @@ public class Calc {
 
         }
         return sum;
-      }
-      if (needToMinus) {
+      } else if (needToMinus) {
         exp = exp.replaceAll("\\- ", "\\+ \\-");
+        String[] bits = exp.split(" \\+ ");
+        sum = 0;
+
+        for (int i = 0; i < bits.length; i++) {
+          sum += Integer.parseInt(bits[i]);
+        }
+        return sum;
+      } else {
+        String[] bits = exp.split(" \\+ ");
+
+        for (int i = 0; i < bits.length; i++) {
+          sum += Integer.parseInt(bits[i]);
+        }
+        return sum;
       }
 
-
-      String[] bits = exp.split(" \\+ ");
-      sum = 0;
-
-      for (int i = 0; i < bits.length; i++) {
-        sum += Integer.parseInt(bits[i]);
-      }
-      return sum;
 
     } else if (needToMinus) {
       exp = exp.replaceAll("\\- ", "\\+ \\-");
@@ -73,14 +83,52 @@ public class Calc {
       }
       return sum;
 
+    } else if (needToMultiply) {
+      String[] s1 = exp.split(" \\* ");
+      for (String n : s1) {
+        mul *= Integer.parseInt(n);
+      }
+      return mul;
     }
+
+
     throw new RuntimeException("처리할수있는계산식이아냐");
+
   }
 
+
   public static String Value1(String exp) {
-    while (exp.charAt(0) == '(' && exp.charAt(exp.length() - 1) == ')') {
-      exp.substring(1, exp.length() - 1);
+    int outbrac = 0;
+    while (exp.charAt(outbrac) == '(' && exp.charAt(exp.length() - 1 - outbrac) == ')') {
+      outbrac++;
     }
+    if (outbrac == 0) return exp;
+
+    return exp.substring(outbrac, exp.length() - outbrac);
+  }
+
+  public static String Value2(String exp) {
+    int count = 0;
+    int start = 0;
+    int index = -1;
+    boolean s = false;
+
+    for (int i = 0; i < exp.length(); i++) {
+      if (exp.charAt(i) == '(') {
+        s = true;
+        start = i;
+        count++;
+      } else if (exp.charAt(i) == ')') {
+        count--;
+      }
+      if (s == true && count == 0) {
+        index = i;
+        break;
+      }
+    }
+    String str = exp.substring(start, index + 1);
+
+    exp = exp.replace(str, Integer.toString(Calc.run(str)));
     return exp;
   }
 
