@@ -108,27 +108,30 @@ public class Calc {
   }
 
   public static String Value2(String exp) {
-    int count = 0;
-    int start = 0;
-    int index = -1;
-    boolean s = false;
 
-    for (int i = 0; i < exp.length(); i++) {
-      if (exp.charAt(i) == '(') {
-        s = true;
-        start = i;
-        count++;
-      } else if (exp.charAt(i) == ')') {
-        count--;
+
+    while (exp.contains("(") == true) {
+      int count = 0;
+      int start = 0;
+      int index = -1;
+      boolean s = false;
+      for (int i = 0; i < exp.length(); i++) {
+        if (exp.charAt(i) == '(') {
+          s = true;
+          start = i;
+          count++;
+        } else if (exp.charAt(i) == ')') {
+          count--;
+        }
+        if (s == true && count == 0) {
+          index = i;
+          break;
+        }
       }
-      if (s == true && count == 0) {
-        index = i;
-        break;
-      }
+      String str = exp.substring(start, index + 1);
+
+      exp = exp.replace(str, Integer.toString(Calc.run(str)));
     }
-    String str = exp.substring(start, index + 1);
-
-    exp = exp.replace(str, Integer.toString(Calc.run(str)));
     return exp;
   }
 

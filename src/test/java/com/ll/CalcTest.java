@@ -86,4 +86,34 @@ public class CalcTest {
     assertThat(Calc.run("10 + (10 + 10)")).isEqualTo(30);
   }
 
+  @Test
+  @DisplayName("10 * (10 + 10) = 200")
+  void t14() {
+    assertThat(Calc.run("10 * (10 + 10)")).isEqualTo(200);
+  }
+
+  @Test
+  @DisplayName("10 + (10 * 10) = 110")
+  void t15() {
+    assertThat(Calc.run("10 + (10 * 10)")).isEqualTo(110);
+  }
+
+  @Test
+  @DisplayName("10 + (10 * 10) + (10 + 10) = 130")
+  void t16() {
+    assertThat(Calc.run("10 + (10 * 10) + (10 + 10)")).isEqualTo(130);
+  }
+  @Test
+  @DisplayName("10 - (10 * 10) + (15 - 10) = -85")
+  void t17() {
+    assertThat(Calc.run("10 - (10 * 10) + (15 - 10)")).isEqualTo(-85);
+  }
+
+  @Test
+  @DisplayName("-(10 + 5) = -15")
+  void t18() {
+    assertThat(Calc.run("-(10 + 5)")).isEqualTo(-15);
+  }
+
+
 }
