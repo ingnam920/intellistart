@@ -110,20 +110,18 @@ public class Calc {
   public static String Value2(String exp) {
 
 
-    while (exp.contains("(") == true) {
-      int count = 0;
+    while (exp.contains("(")) {
+
+      int num = 0;
       int start = 0;
       int index = -1;
-      boolean s = false;
+      int last = -1;
+
       for (int i = 0; i < exp.length(); i++) {
         if (exp.charAt(i) == '(') {
-          s = true;
           start = i;
-          count++;
+
         } else if (exp.charAt(i) == ')') {
-          count--;
-        }
-        if (s == true && count == 0) {
           index = i;
           break;
         }
